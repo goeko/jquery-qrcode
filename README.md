@@ -12,6 +12,7 @@ which build qrcode in various language. <a href='http://jeromeetienne.github.com
 it to make it easy to include in your own code.
 
 Canvas2Image : v0.1 Copyright (c) 2008 Jacob Seidelin, jseidelin@nihilogic.dk
+
 base64 : Copyright (C) 1999 Masanao Izumo <iz@onicos.co.jp>
 
 Show, dont tell, here is a <a href='https://github.com/goeko/jquery-qrcode/blob/master/examples/basic.html'>example</a>
