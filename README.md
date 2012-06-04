@@ -5,13 +5,16 @@ MyStuff: <a href="https://github.com/goeko/jquery-qrcode">goeko/jquery-qrcode</a
 <a href='http://jeromeetienne.github.com/jquery-qrcode'>jquery.qrcode.js</a>
 is *jquery plugin for a pure browser qrcode generation*.
 It allow you to easily add qrcode to your webpages.
-It is standalone, less than 4k after minify+gzip, no image download.
+It is standalone, less than 4k after minify+gzip, with image creation and download.
 It doesnt rely on external services which go on and off, or add latency while loading.
 It is based on a <a href='http://www.d-project.com/qrcode/index.html'>library</a>
 which build qrcode in various language. <a href='http://jeromeetienne.github.com/jquery-qrcode'>jquery.qrcode.js</a> wraps
 it to make it easy to include in your own code.
 
-Show, dont tell, here is a <a href='https://github.com/jeromeetienne/jquery-qrcode/blob/master/examples/basic.html'>example</a>
+Canvas2Image : v0.1 Copyright (c) 2008 Jacob Seidelin, jseidelin@nihilogic.dk
+base64 : Copyright (C) 1999 Masanao Izumo <iz@onicos.co.jp>
+
+Show, dont tell, here is a <a href='https://github.com/goeko/jquery-qrcode/blob/master/examples/basic.html'>example</a>
 
 ## How to Use It
 
