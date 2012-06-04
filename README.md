@@ -1,5 +1,7 @@
 # jquery.qrcode.js
 
+MyStuff: <a href="https://github.com/goeko/jquery-qrcode">goeko/jquery-qrcode</a>
+
 <a href='http://jeromeetienne.github.com/jquery-qrcode'>jquery.qrcode.js</a>
 is *jquery plugin for a pure browser qrcode generation*.
 It allow you to easily add qrcode to your webpages.
