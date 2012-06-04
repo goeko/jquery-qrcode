@@ -1,6 +1,79 @@
 <html>
 <head>
 <title>basic example</title>
+<style type="text/css" media="screen">
+	@charset "UTF-8";
+	/* "Yet Another Multicolumn Layout" v3.0.4 (c) by Dirk Jesse (http://www.yaml.de)
+	* $Revision: 134 $ $Date: 2007-10-12 20:31:37 +0200 (Fr, 12 Okt 2007) $ */
+	@media all {
+	*{margin:0;padding:0}
+	option{padding-left:0.4em}
+	* html body *{overflow:visible}
+	* html iframe,* html frame{overflow:auto}
+	* html frameset{overflow:hidden}
+	html{height:100%;margin-bottom:1px}
+	body{font-size:100.01%;color:#000;background:#fff;text-align:left}
+	fieldset,img{border:0 solid}
+	ul,ol,dl{margin:0 0 1em 1em}
+	li{margin-left:1.5em;line-height:1.5em}
+	dt{font-weight:700}
+	dd{margin:0 0 1em 2em}
+	blockquote{margin:0 0 1em 1.5em}
+	#topnav{position:absolute;top:10px;right:10px;text-align:right}
+	#col1{float:left;width:200px;z-index:3}
+	#col2{float:right;width:200px;z-index:5}
+	#col3{width:auto;z-index:1;margin:0 200px}
+	#header,#nav,#main,#footer{clear:both}
+	#col1_content{z-index:4}
+	#col2_content{z-index:6}
+	#col3_content{z-index:2}
+	.hideboth #col3{margin-left:0;margin-right:0}
+	.hidecol1 #col3{margin-left:0;margin-right:200px}
+	.hidecol2 #col3{margin-left:200px;margin-right:0}
+	.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+	.clearfix{display:block}
+	.floatbox{overflow:hidden}
+	.subcolumns,.subcolumns_oldgecko{width:100%;overflow:hidden}
+	.c50r,.c25r,.c33r,.c38r,.c66r,.c75r,.c62r{float:right;margin-left:-5px;}
+	.c25l,.c25r{width:25%}
+	.c33l,.c33r{width:33.333%}
+	.c50l,.c50r{width:50%}
+	.c66l,.c66r{width:66.666%}
+	.c75l,.c75r{width:75%}
+	.c38l,.c38r{width:38.2%}
+	.c62l,.c62r{width:61.8%}
+	.subc{padding:0 0.5em}
+	.subcl{padding:0 1em 0 0}
+	.subcr{padding:0 0 0 1em}
+	.skip,.hideme,.print{position:absolute;top:-1000em;left:-1000em;height:1px;width:1px}
+	.skip:focus,.skip:active{position:static;top:0;left:0;height:auto;width:auto}
+	#header,#col1_content,#col2_content,#col3_content{position:relative}
+	.hideboth #col1,.hideboth #col2,.hidecol1 #col1,.hidecol2 #col2,#ie_clearing{display:none}
+	.subcolumns_oldgecko,.c50l,.c25l,.c33l,.c38l,.c66l,.c75l,.c62l{float:left}
+	}
+	html {
+		font: normal normal normal 1em/1.5em Arial, sans-serif;
+	}
+	body {
+		padding:2em;
+	}
+	fieldset {
+		position:relative;
+		border:1px solid #000;
+		padding:1em;
+	}
+	label {
+		display:inline-block;
+		width:150px;
+	}
+	#qrcodeforms {
+	}
+	#textdownload,
+	#buttoncontainer {
+		position:absolute;
+		right:1em;
+	}
+</style>
 </head>
 <body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
@@ -9,19 +82,320 @@
 --><script type="text/javascript" src="../src/jquery.qrcode.js"></script>
 <script type="text/javascript" src="../src/qrcode.js"></script>
 
-<p>Render in table</p>
-<div id="qrcodeTable"></div>
+<script src="../src/base64.js" type="text/javascript" charset="utf-8"></script>
+<script src="../src/canvas2image.js" type="text/javascript" charset="utf-8"></script>
+
+
+<fieldset id="set_qrcode" class="">
+	<legend>SET QRCODE</legend>
+
+	<div id="textdownload" style="font-style: italic; display: none; ">Now you can right click and download the image<br>
+		<input type="button" id="resetbtn" value="Reset">
+	</div>
+	
+	<div id="buttoncontainer" style="display:block;">
+		<input type="button" id="savepngbtn" value="Save PNG">
+		<input type="button" id="convertpngbtn" value="Convert to PNG">
+		<br>
+		<input type="button" id="savebmpbtn" value="Save BMP">
+		<input type="button" id="convertbmpbtn" value="Convert to BMP">
+		<br>
+		<input type="button" id="savejpegbtn" value="Save JPEG">
+		<input type="button" id="convertjpegbtn" value="Convert to JPEG">
+
+	</div>
+
+	<div class="qrcodeforms">
+		<div>	<label for="txt">Text:</label>
+			<input type="text" name="txt" value="http://www.goeko.de" id="txt" placeholder="http://www.goeko.de" />
+		</div>	
+
+		<div>	
+			<label for="len">Size (<input type="text" id="len_txt" style="width:45px" />):</label>
+			<!-- <input type="text" name="len" value="320" id="len"> -->
+		
+			<input type="range" name="len" id="len" min="1" max="2048" value="256" />
+		</div>	
+	</div>
+	<div>
+		<label for="correctLevel">Correction Level:</label>
+		<select name="correctLevel" id="correctLevel">
+			<option value="QRErrorCorrectLevel.L">L</option>
+			<option value="QRErrorCorrectLevel.M">M</option>
+			<option value="QRErrorCorrectLevel.Q">Q</option>
+			<option value="QRErrorCorrectLevel.H" selected="selected">H</option>
+		</select>
+	</div>
+
+<div>
+	
+	<label for="image_src">Image</label><input type="checkbox" name="image_src" value="" id="image_src">
+	
+	
+</div>
+
+	<!-- <div>
+		
+		<input name="file" id="file" type="file" size="50" maxlength="200000" accept="image/*" value="" />
+		<div id="file_output"></div>
+	</div> -->
+
+</fieldset>
+
 <p>Render in canvas</p>
 <div id="qrcodeCanvas"></div>
+
+
+
+
+<!-- <div class="subcolumns">
+	<div class="c50l">
+		<p>Render in table</p>
+		<div id="qrcodeTable"></div>
+	</div>
+	<div class="c50r">
+		<p>Render in canvas</p>
+		<div id="qrcodeCanvas"></div>
+	</div>
+</div> -->
+
 <script>
-	//jQuery('#qrcode').qrcode("this plugin is great");
-	jQuery('#qrcodeTable').qrcode({
-		render	: "table",
-		text	: "http://jetienne.com"
-	});	
-	jQuery('#qrcodeCanvas').qrcode({
-		text	: "http://jetienne.com"
-	});	
+
+	function setQR () {
+		
+		
+		
+		txt=jQuery('#txt').val();
+		len=jQuery('#len').val();
+		correctLevel=jQuery('#correctLevel').val();
+		
+		$('#len_txt').val(len);
+		
+		console.log( 'txt:' + txt);
+
+		
+		
+		// jQuery('#qrcodeTable').html('').qrcode({
+		// 	render	: "table",
+		// 	width		: len,
+		// 	height	: len,
+		// 	typeNumber	: -1,
+		// 	correctLevel	: eval(correctLevel),
+		//                         background      : "#ffffff",
+		//                         foreground      : "#000000",
+		// 	text	: txt
+		// });
+		jQuery('#qrcodeCanvas').html('').qrcode({
+			width		: len,
+			height	: len,
+			correctLevel	: eval(correctLevel),
+                        background      : "#ffffff",
+                        foreground      : "#000000",
+			text	: txt
+		});
+		jQuery('#qrcodeCanvas canvas').attr('id', 'qrcanvas');
+		// showDownloadText();
+		setCanvas2image();
+		
+	}
+
+	jQuery('#txt').bind('keyup', function () { setQR(); });
+	jQuery('#len').bind('change', function () { setQR(); });
+	$('#len_txt').bind('keyup', function () {
+		$('#len').val($(this).val());
+		setQR();
+	});
+	jQuery('#correctLevel').bind('change', function () { setQR(); });
+	
+	jQuery('#qrcodeCanvas').css({
+		padding:'2em',
+		outline:'1px solid #999',
+		display:'inline-block'
+	})
+	
+	// $('#file').bind('change', function () {
+	// 	
+	// 	// console.log(this.files)
+	// 	files = handleFiles(this.files)
+	// 	// $('#file_output').html('<img src="'+files+'" />');
+	// })
+	
+	$('#image_src').bind('click', function () {
+		setQR();
+	})
+	
+	
+	// // Check for the various File API support.
+	// if (window.File && window.FileReader && window.FileList && window.Blob) {
+	//   // Great success! All the File APIs are supported.
+	// } else {
+	//   alert('The File APIs are not fully supported in this browser.');
+	// }
+	// 
+	// function handleFiles(files) {
+	//   for (var i = 0; i < files.length; i++) {
+	//     var file = files[i];
+	//     var imageType = /image.*/;
+	// 
+	//     if (!file.type.match(imageType)) {
+	//       continue;
+	//     }
+	// 
+	//     var img = document.createElement("img");
+	//     img.classList.add("obj");
+	//     img.file = file;
+	//     file_output.appendChild(img);
+	// 
+	//     var reader = new FileReader();
+	//     reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
+	//     reader.readAsDataURL(file);
+	//   }
+	// }
+</script>
+
+
+<script type="text/javascript">
+
+
+// setup our test canvas
+// and a simple drawing function
+function setCanvas2image () {
+
+
+		var bMouseIsDown = false;
+
+		var oCanvas = document.getElementById("qrcanvas");
+		var oCtx = oCanvas.getContext("2d");
+
+		var iWidth = oCanvas.width;
+		var iHeight = oCanvas.height;
+
+		// oCtx.fillStyle = "rgb(255,255,255)";
+		// oCtx.fillRect(0,0,iWidth,iHeight);
+		// 
+		// oCtx.fillStyle = "rgb(255,0,0)";
+		// oCtx.fillRect(20,20,30,30);
+		// 
+		// oCtx.fillStyle = "rgb(0,255,0)";
+		// oCtx.fillRect(60,60,30,30);
+		// 
+		// oCtx.fillStyle = "rgb(0,0,255)";
+		// oCtx.fillRect(100,100,30,30);
+
+		oCtx.beginPath();
+		oCtx.strokeStyle = "rgb(255,0,255)";
+		oCtx.strokeWidth = "4px";
+		
+		if ($('#image_src:checked').length) {
+			var objImg = new Image();
+			objImg.src = "bild.png";
+			oCtx.drawImage(objImg, 0, 0, $('#len').val(), $('#len').val());
+		};
+
+
+		oCanvas.onmousedown = function(e) {
+			bMouseIsDown = true;
+			iLastX = e.clientX - oCanvas.offsetLeft + (window.pageXOffset||document.body.scrollLeft||document.documentElement.scrollLeft);
+			iLastY = e.clientY - oCanvas.offsetTop + (window.pageYOffset||document.body.scrollTop||document.documentElement.scrollTop);
+		}
+		oCanvas.onmouseup = function() {
+			bMouseIsDown = false;
+			iLastX = -1;
+			iLastY = -1;
+		}
+		oCanvas.onmousemove = function(e) {
+			if (bMouseIsDown) {
+				var iX = e.clientX - oCanvas.offsetLeft + (window.pageXOffset||document.body.scrollLeft||document.documentElement.scrollLeft);
+				var iY = e.clientY - oCanvas.offsetTop + (window.pageYOffset||document.body.scrollTop||document.documentElement.scrollTop);
+				oCtx.moveTo(iLastX, iLastY);
+				oCtx.lineTo(iX, iY);
+				oCtx.stroke();
+				iLastX = iX;
+				iLastY = iY;
+			}
+		}
+
+		function showDownloadText() {
+			document.getElementById("buttoncontainer").style.display = "none";
+			document.getElementById("textdownload").style.display = "block";
+		}
+
+		function hideDownloadText() {
+			document.getElementById("buttoncontainer").style.display = "block";
+			document.getElementById("textdownload").style.display = "none";
+		}
+
+		function convertCanvas(strType) {
+			if (strType == "PNG")
+				var oImg = Canvas2Image.saveAsPNG(oCanvas, true);
+			if (strType == "BMP")
+				var oImg = Canvas2Image.saveAsBMP(oCanvas, true);
+			if (strType == "JPEG")
+				var oImg = Canvas2Image.saveAsJPEG(oCanvas, true);
+
+			if (!oImg) {
+				alert("Sorry, this browser is not capable of saving " + strType + " files!");
+				return false;
+			}
+
+			oImg.id = "canvasimage";
+
+			oImg.style.border = oCanvas.style.border;
+			oCanvas.parentNode.replaceChild(oImg, oCanvas);
+
+			showDownloadText();
+		}
+
+		function saveCanvas(pCanvas, strType) {
+			var bRes = false;
+			if (strType == "PNG")
+				bRes = Canvas2Image.saveAsPNG(oCanvas);
+			if (strType == "BMP")
+				bRes = Canvas2Image.saveAsBMP(oCanvas);
+			if (strType == "JPEG")
+				bRes = Canvas2Image.saveAsJPEG(oCanvas);
+
+			if (!bRes) {
+				alert("Sorry, this browser is not capable of saving " + strType + " files!");
+				return false;
+			}
+		}
+
+		document.getElementById("savepngbtn").onclick = function() {
+			saveCanvas(oCanvas, "PNG");
+		}
+		document.getElementById("savebmpbtn").onclick = function() {
+			saveCanvas(oCanvas, "BMP");
+		}
+		document.getElementById("savejpegbtn").onclick = function() {
+			saveCanvas(oCanvas, "JPEG");
+		}
+
+		document.getElementById("convertpngbtn").onclick = function() {
+			convertCanvas("PNG");
+		}
+		document.getElementById("convertbmpbtn").onclick = function() {
+			convertCanvas("BMP");
+		}
+		document.getElementById("convertjpegbtn").onclick = function() {
+			convertCanvas("JPEG");
+		}
+
+		document.getElementById("resetbtn").onclick = function() {
+			var oImg = document.getElementById("canvasimage");
+			oImg.parentNode.replaceChild(oCanvas, oImg);
+		
+			hideDownloadText();
+		}
+
+}
+
+
+window.onload = function () {
+	setQR();
+	setCanvas2image();
+}
+
 </script>
 
 </body>
